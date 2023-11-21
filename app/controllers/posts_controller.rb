@@ -1,8 +1,12 @@
 class PostsController < ApplicationController
 
     def create
-        post = Post.create(post_params)
-        render json: post, status: :created
+        post = Post.new(post_params)
+        if post.save
+            render json: post, status: :created
+        else
+            render json: { errors: post.errors.full_messages }, status: :unprocessable_entity
+        end
     end
 
     def index

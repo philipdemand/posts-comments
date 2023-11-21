@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 function CreatePost({ onAddPost }) {
 
     const [postValue, setPostValue] = useState("")
+    const [errorData, setErrorData] = useState(null)
 
     const handleChange = (e) => {
         setPostValue(e.target.value)
@@ -20,9 +21,17 @@ function CreatePost({ onAddPost }) {
             },
             body: JSON.stringify(submitData)
         })
-        .then((r) => r.json())
-        .then(object => onAddPost(object))
-        .then(setPostValue(""))
+        .then((response) => {
+            if (response.ok) {
+              return response.json().then((object) => {
+                onAddPost(object);
+              })
+            } else {
+              response.json().then((data) => setErrorData(data.errors))
+            }
+          })
+          .then(setErrorData(null))
+          .then(setPostValue(""))
     }
 
     return (
@@ -38,6 +47,15 @@ function CreatePost({ onAddPost }) {
             />
             <button type="submit">Submit</button>
         </form>
+        {errorData && (
+        <div style={{ color: 'red' }}>
+          <ul>
+            {errorData.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
         </>
     )
 }

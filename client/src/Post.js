@@ -7,6 +7,7 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
     const [editPostValue, setEditPostValue] = useState("")
     const [commentClicked, setCommentClicked] = useState(false)
     const [commentValue, setCommentValue] = useState("")
+    const [errorData, setErrorData] = useState(null)
 
     const toggleEditPost = () => {
         setEditPostClicked(!editPostClicked)
@@ -55,10 +56,18 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
             },
             body: JSON.stringify(submitData)
         })
-        .then((r) => r.json())
-        .then(object => onAddComment(object))
+        .then((response) => {
+            if (response.ok) {
+              return response.json().then((object) => {
+                onAddComment(object);
+              })
+            } else {
+              response.json().then((data) => setErrorData(data.errors))
+            }
+          })
         .then(setCommentValue(""))
         .then(setCommentClicked(false))
+        .then(setErrorData(null))
     }
 
      const commentChange = (e) => {
@@ -106,6 +115,15 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
             </li>
         )}
         </ul>
+        {errorData && (
+        <div style={{ color: 'red' }}>
+          <ul>
+            {errorData.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
         </>
     )
 }
