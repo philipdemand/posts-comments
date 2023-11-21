@@ -4,6 +4,7 @@ function Comment({ comment, onEditComment, onDeleteComment }) {
 
     const [isEditClicked, setIsEditClicked] = useState(false)
     const [editCommentValue, setEditCommentValue] = useState("")
+    const [editCommentErrors, setEditCommentErrors] = useState(null)
 
     const toggleEditComment = () => {
         setIsEditClicked(!isEditClicked)
@@ -19,10 +20,20 @@ function Comment({ comment, onEditComment, onDeleteComment }) {
             },
             body: JSON.stringify({comment_body: editCommentValue})
         })
-        .then((r) => r.json())
-        .then(object => onEditComment(object))
+        .then((response) => {
+            if (response.ok) {
+              return response.json().then((object) => {
+                onEditComment(object);
+              })
+            } else {
+              response.json().then((data) => setEditCommentErrors(data.errors))
+            }
+          })
+        // .then((r) => r.json())
+        // .then(object => onEditComment(object))
         .then(setEditCommentValue(""))
         .then(setIsEditClicked(false))
+        .then(setEditCommentErrors(null))
     }
 
     const editCommentChange = (e) => {
@@ -53,6 +64,15 @@ function Comment({ comment, onEditComment, onDeleteComment }) {
                 <button type="submit">Submit</button>
             </form>
         : null}
+        {editCommentErrors && (
+        <div style={{ color: 'red' }}>
+          <ul>
+            {editCommentErrors.map((error, index) => (
+              <li key={index}>{error}</li>
+            ))}
+          </ul>
+        </div>
+      )}
         </>
     )
 }
