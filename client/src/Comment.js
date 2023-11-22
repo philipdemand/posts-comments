@@ -30,9 +30,9 @@ function Comment({ comment, onEditComment, onDeleteComment }) {
             }
           })
         .then(() => {
-          (setEditCommentValue(""))
-          (setIsEditClicked(false))
-          (setEditCommentErrors(null))
+          setEditCommentValue("")
+          setIsEditClicked(false)
+          setEditCommentErrors(null)
         })
     }
 
