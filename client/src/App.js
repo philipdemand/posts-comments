@@ -29,28 +29,28 @@ function App() {
 
   const handleAddComment = (commentObj) => {
     const updatedPosts = posts.map(post => ({
-        ...post,
-        comments: post.id === commentObj.post_id
-        ? [...post.comments, commentObj]
-        : post.comments }))
+      ...post,
+      comments: post.id === commentObj.post_id
+      ? [...post.comments, commentObj]
+      : post.comments }))
     setPosts(updatedPosts)
   }
 
   const handleEditComment = (commentObj) => {
     const updatedPosts = posts.map(post => ({ 
-        ...post,
-        comments: post.id === commentObj.post_id
-        ? post.comments.map(comment => comment.id === commentObj.id ? commentObj : comment)
-        : post.comments }))
+      ...post,
+      comments: post.id === commentObj.post_id
+      ? post.comments.map(comment => comment.id === commentObj.id ? commentObj : comment)
+      : post.comments }))
     setPosts(updatedPosts)
   }
 
   const handleDeleteComment = (commentObj) => {
     const updatedPosts = posts.map(post => ({
-        ...post,
-        comments: post.id === commentObj.post_id
-        ? post.comments.filter(comment => comment.id !== commentObj.id)
-        : post.comments }))
+      ...post,
+      comments: post.id === commentObj.post_id
+      ? post.comments.filter(comment => comment.id !== commentObj.id)
+      : post.comments }))
     setPosts(updatedPosts)
   }
 

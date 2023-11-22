@@ -29,11 +29,11 @@ function Comment({ comment, onEditComment, onDeleteComment }) {
               response.json().then((data) => setEditCommentErrors(data.errors))
             }
           })
-        // .then((r) => r.json())
-        // .then(object => onEditComment(object))
-        .then(setEditCommentValue(""))
-        .then(setIsEditClicked(false))
-        .then(setEditCommentErrors(null))
+        .then(() => {
+          (setEditCommentValue(""))
+          (setIsEditClicked(false))
+          (setEditCommentErrors(null))
+        })
     }
 
     const editCommentChange = (e) => {

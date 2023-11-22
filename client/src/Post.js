@@ -33,11 +33,12 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
               response.json().then((data) => setPostEditErrors(data.errors))
             }
           })
-        // .then((r) => r.json())
-        // .then(object => onEditPost(object))
-        .then(setEditPostValue(""))
-        .then(setEditPostClicked(false))
-        .then(setPostEditErrors(null))
+        .then(() => {
+          (setEditPostValue(""))
+          (setEditPostClicked(false))
+          (setPostEditErrors(null))
+        })
+        
     }
 
     const editPostChange = (e) => {
@@ -76,9 +77,12 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
               response.json().then((data) => setErrorData(data.errors))
             }
           })
-        .then(setCommentValue(""))
-        .then(setCommentClicked(false))
-        .then(setErrorData(null))
+        .then(() => {
+          (setCommentValue(""))
+          (setCommentClicked(false))
+          (setErrorData(null))
+        })
+       
     }
 
      const commentChange = (e) => {

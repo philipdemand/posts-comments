@@ -30,8 +30,10 @@ function CreatePost({ onAddPost }) {
               response.json().then((data) => setErrorData(data.errors))
             }
           })
-          .then(setErrorData(null))
-          .then(setPostValue(""))
+        .then(() => {
+          setErrorData(null);
+          setPostValue("");
+        })
     }
 
     return (
