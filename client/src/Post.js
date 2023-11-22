@@ -34,9 +34,9 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
             }
           })
         .then(() => {
-          (setEditPostValue(""))
-          (setEditPostClicked(false))
-          (setPostEditErrors(null))
+          setEditPostValue("")
+          setEditPostClicked(false)
+          setPostEditErrors(null)
         })
         
     }
@@ -78,9 +78,9 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
             }
           })
         .then(() => {
-          (setCommentValue(""))
-          (setCommentClicked(false))
-          (setErrorData(null))
+          setCommentValue("")
+          setCommentClicked(false)
+          setErrorData(null)
         })
        
     }
