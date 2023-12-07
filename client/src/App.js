@@ -13,7 +13,7 @@ function App() {
   }, [])
 
   const handleAddPost = (postObj) => {
-    setPosts([...posts, postObj])
+    setPosts([postObj, ...posts])
   }
 
   const handleEditPost = (postObj) => {
@@ -31,7 +31,7 @@ function App() {
     const updatedPosts = posts.map(post => ({
       ...post,
       comments: post.id === commentObj.post_id
-      ? [...post.comments, commentObj]
+      ? [commentObj, ...post.comments]
       : post.comments }))
     setPosts(updatedPosts)
   }
