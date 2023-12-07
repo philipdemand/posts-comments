@@ -96,16 +96,16 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
         <button onClick={handleDeleteClick}>Delete Post</button>
         <button onClick={toggleAddComment}>Submit Comment</button>
         {editPostClicked ? 
-            <form onSubmit={editPostSubmit}>
-                Edit Post:
-                <input 
-                    type="text"
-                    name="editpost"
-                    value={editPostValue}
-                    onChange={editPostChange}
-                />
-                <button type="submit">Submit</button>
-            </form>
+          <form onSubmit={editPostSubmit}>
+            Edit Post:
+            <input 
+              type="text"
+              name="editpost"
+              value={editPostValue}
+              onChange={editPostChange}
+            />
+            <button type="submit">Submit</button>
+          </form>
         : null}
         {postEditErrors && (
         <div style={{ color: 'red' }}>
@@ -117,26 +117,26 @@ function Post({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
         </div>
       )}
         {commentClicked ? 
-            <form onSubmit={commentSubmit}>
-                Submit Comment:
-                <input 
-                    type="text"
-                    name="submitcomment"
-                    value={commentValue}
-                    onChange={commentChange}
-                />
-                <button type="submit">Submit</button>
-            </form>
+          <form onSubmit={commentSubmit}>
+            Submit Comment:
+            <input 
+              type="text"
+              name="submitcomment"
+              value={commentValue}
+              onChange={commentChange}
+            />
+            <button type="submit">Submit</button>
+          </form>
         : null}
         <ul>
         {post.comments.map(comment => 
-            <li key={comment.id}>
-                <Comment 
-                    comment={comment} 
-                    onEditComment={onEditComment}
-                    onDeleteComment={onDeleteComment}
-                />
-            </li>
+          <li key={comment.id}>
+            <Comment 
+              comment={comment} 
+              onEditComment={onEditComment}
+              onDeleteComment={onDeleteComment}
+            />
+          </li>
         )}
         </ul>
         {errorData && (

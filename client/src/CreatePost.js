@@ -40,13 +40,14 @@ function CreatePost({ onAddPost }) {
         <>
         <br/>
         <form onSubmit={handleSubmit}>
-            Submit Post:
+            Submit Post:{" "}
             <input
                 type="text"
                 name="submitpost"
                 value={postValue}
                 onChange={handleChange}
             />
+            {" "}
             <button type="submit">Submit</button>
         </form>
         {errorData && (
