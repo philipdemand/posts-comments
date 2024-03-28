@@ -1,20 +1,38 @@
 class Api::V1::CommentsController < ApplicationController
-  before_action :set_comment, only: %i[ update destroy ]
+  before_action :set_comment, only: %i[ update destroy upvote ]
 
   def create
     @post = Post.find(params[:id])
-    @comment = @post.comments.create(comment_params)
-    render json: @comment, status: :created
+    @comment = @post.comments.build(comment_params)
+    @comment.user_id = (session[:user_id])
+    if @comment.save!
+      render json: @comment, status: :created
+    else
+      render json: { alert: 'Failed to create comment.' }
+    end
   end
 
   def update
-    @comment.update(comment_params)
-    render json: @comment
+    if session[:user_id] == @comment.user_id
+      @comment.update!(comment_params)
+      render json: @comment
+    else
+      render json: { error: 'Unauthorized: You do not have permission to update this comment.' }, status: :unauthorized
+    end
   end
 
   def destroy
-    @comment.destroy
-    head :no_content
+    if session[:user_id] == @comment.user_id
+      @comment.destroy
+      head :no_content
+    else
+      render json: { error: 'Unauthorized: You do not have permission to delete this comment.' }, status: :unauthorized
+    end
+  end
+
+  def upvote
+    @comment.update(likes: @comment.likes + 1)
+    render json: { likes: @comment.likes }
   end
 
   private

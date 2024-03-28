@@ -1,8 +1,13 @@
 import React, { useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import Card from 'react-bootstrap/Card';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Comment from './Comment';
 import axios from 'axios'
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import './poststyle.css';
 
-const Post = ({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onDeleteComment }) => {
+const Post = ({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onDeleteComment, onUpdatePostLikes, onUpdateCommentLikes }) => {
 
     const [editClicked, setEditClicked] = useState(false)
     const [editPost, setEditPost] = useState("")
@@ -63,14 +68,36 @@ const Post = ({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
         setCommentClicked(!commentClicked)
     }
 
+    const upVote = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await axios.post(`/api/v1/posts/${post.id}/upvote`)
+            onUpdatePostLikes(response.data)
+        } catch (error) {
+            console.error(error.message)
+        }
+    }
+
     return (
-        <div className="card">
-            <h2>{post.post_body}</h2>
-            <button onClick={toggleEdit}>Edit Post</button>
-            <button onClick={deletePost}>Delete Post</button>
-            <button onClick={toggleComment}>Add Comment</button>
+        <Card style={{ 
+            border: '1px solid #ced4da',
+            borderRadius: '10px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+            background: 'linear-gradient(to right, #f8f9fa, #e9ecef)', 
+            width: '30rem', 
+            marginBottom: '20px' }}>
+                <Card.Title style={{ marginTop: "20px", marginLeft: "20px"}}>{post.user.username}</Card.Title>
+                <Card.Body>{post.post_body}</Card.Body>
+                <ButtonGroup style={{ marginBottom: '20px', marginLeft: '10px' }}className="me-2" aria-label="First group">
+                    <Button variant="secondary" size="sm" onClick={toggleEdit}>Edit Post</Button>{' '}
+                    <Button variant="secondary" size="sm" onClick={deletePost}>Delete Post</Button>{' '}
+                    <Button variant="secondary" size="sm" onClick={toggleComment}>Reply</Button>
+                </ButtonGroup>
+                <span style={{ marginLeft: "20px", marginBottom: "20px"}}className="heart-icon">
+                    <i onClick={upVote} className="fas fa-heart"></i> {post.likes}
+                </span>
             {editClicked ?
-                <form className="edit" onSubmit={submitEditPost}>
+                <form style={{ marginLeft: '20px', marginBottom: '20px' }} onSubmit={submitEditPost}>
                     <input 
                         type="text"
                         name="editpost"
@@ -81,7 +108,7 @@ const Post = ({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
                 </form>
             : null}
             {commentClicked ?
-                <form className="edit" onSubmit={submitComment}>
+                <form style={{ marginLeft: '20px', marginBottom: '20px' }} onSubmit={submitComment}>
                     <input 
                         type="text"
                         name="comment"
@@ -91,14 +118,15 @@ const Post = ({ post, onEditPost, onDeletePost, onAddComment, onEditComment, onD
                     <button type="submit">Submit</button>
                 </form>
             : null}
-            <ul>{post.comments.map(comment => <li key={comment.id}>
+                {post.comments.map((comment, index) => (
                 <Comment 
-                    comment={comment}
-                    onEditComment={onEditComment}
-                    onDeleteComment={onDeleteComment}
-                /></li>)}
-            </ul>
-        </div>
+                    key={index} 
+                    comment={comment} 
+                    onEditComment={onEditComment} 
+                    onDeleteComment={onDeleteComment} 
+                    onUpdateCommentLikes={onUpdateCommentLikes}/>
+                ))}
+        </Card>
     );
 };
 

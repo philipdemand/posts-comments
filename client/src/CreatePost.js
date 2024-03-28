@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
 import axios from 'axios'
 
 const CreatePost = ({ onAddPost }) => {
@@ -15,6 +16,7 @@ const CreatePost = ({ onAddPost }) => {
             setPost("")
         } catch (error) {
             console.error(`Error posting ${error.message}`)
+            setPost("")
         }
     }
 
@@ -25,15 +27,17 @@ const CreatePost = ({ onAddPost }) => {
     return (
         <div>
             <br></br>
-            <form onSubmit={submitPost}>
+            <Form onSubmit={submitPost}>
                 <input 
                     type="text"
                     name="post"
+                    placeholder="What's On Your Mind Today?"
                     value={post}
                     onChange={postChange}
+                    style={{ width: '300px' }}
                 />
                 <button type="submit">Submit</button>
-            </form>
+            </Form>
             <br></br>
         </div>
     );
